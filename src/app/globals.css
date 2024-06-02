@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "pixelate";
+  src: url("/fonts/pixelate.ttf") format("truetype");
+}
+
+textarea:focus, input:focus, select:focus {
+  box-shadow: 0 0 0 0;
+  border: 0 none;
+  outline: 0;
+} 
+
+h1, td {
+  font-family: var(--font-nexa);
+}
+
+* {
+  font-family: var(--font-sora);
+  color: #EFEFEF;
+  scroll-behavior: smooth;
+}
+
+.swiper-pagination-bullet {
+  background-color: yellow;
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: orange;
+}
+
+.custom-bullet {
+  background-color: yellow; /* Cor personalizada para bullets */
+  width: 12px;
+  height: 12px;
+}

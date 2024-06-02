@@ -9,14 +9,21 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        login: "url('/images/login.png')",
-        home: "url('/images/home.png')",
-        tokenize: "url('/images/fundoTokenize.png')",
-        "footer-texture": "url('/img/footer-texture.png')",
+        home: "url('/images/fundo_home.png')",
+        game: "url('/gameImages/background.png')",
+        home2: "url('/images/fundo_home2.png')",
+        footer: "url('/images/footer.png')",
+        ship: "url('/images/ship_fundo.png')",
+        shipCard: "url('/images/shipCard_fundo.png')",
+        modal: "url('/images/modal_fundo.png')",
       },
       colors: {
         "purple": "#8761CF",
-        "blue": "#21FFFF",
+        "yellow-primary": "#FAF117",
+      },
+      fontFamily: {
+        nexa: ['var(--font-nexa)'],
+        sora: ['var(--font-sora)'],
       },
     },
   },

@@ -13,7 +13,7 @@ function secToDays(secs: number) {
   return secs / segundosEmUmDia;
 }
 
-function timestampUntil(dateString: string) {
+function timestampUntil(dateString: string | number) {
   const now = new Date();
   if (!dateString) return;
   const targetDate = new Date(dateString);
@@ -22,21 +22,23 @@ function timestampUntil(dateString: string) {
 }
 
 function timestampToDate(timestamp: number) {
-  const sec = Math.floor((timestamp / 1000) % 60);
-  const min = Math.floor((timestamp / (1000 * 60)) % 60);
-  const hours = Math.floor((timestamp / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(timestamp / (1000 * 60 * 60 * 24));
+  const days = Math.floor(timestamp / (24 * 3600));
+  const remainingAfterDays = timestamp % (24 * 3600);
+  const hours = Math.floor(remainingAfterDays / 3600);
+  const remainingAfterHours = remainingAfterDays % 3600;
+  const minutes = Math.floor(remainingAfterHours / 60);
+  const seconds = remainingAfterHours % 60;
 
   return {
-    days: days >= 0 ? days.toFixed() : 0,
-    hours: hours >= 0 ? hours.toFixed() : 0,
-    min: min >= 0 ? min.toFixed() : 0,
-    sec: sec >= 0 ? sec.toFixed() : 0,
+    days,
+    hours,
+    minutes,
+    seconds,
   };
 }
 
 function dateToTimestamp() {
-  return Math.floor(new Date('2024-05-05').getTime() / 1000)
+  return Math.floor(new Date("2024-05-05").getTime() / 1000);
 }
 
 export const DateFormat = {
@@ -45,5 +47,5 @@ export const DateFormat = {
   secToDays,
   timestampUntil,
   timestampToDate,
-  dateToTimestamp
+  dateToTimestamp,
 };
