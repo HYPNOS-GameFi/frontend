@@ -66,7 +66,7 @@ export function ChallengeList() {
         {challenges.slice(0, 10).map((e, i) => {
           const time =
             e._choice === 0 ? "12H" : e._choice === 1 ? "24H" : "48H";
-            
+
           return (
             <tr
               key={i}
@@ -87,6 +87,7 @@ export function ChallengeList() {
                     <ul className="p-2 shadow menu dropdown-content z-[1] mt-4 rounded-box bg-[#EFEFEF] bg-opacity-80 backdrop-blur-md w-full">
                       {shipsChallenges.map((e: any) => (
                         <li
+                          key={e._tokenId}
                           onClick={() => setShipId(e._tokenId)}
                           className="text-black"
                         >

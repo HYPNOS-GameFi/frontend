@@ -29,8 +29,8 @@ export function UserCard({
   }
 
   async function onBet() {
-    const res = await BetService.onBetOnChallenge(user.id, 1, 10, 7);
-    console.log(res);
+    /* const res = await BetService.onBetOnChallenge(user.id, 1, 10, 7);
+    console.log(res); */
   }
 
   return (

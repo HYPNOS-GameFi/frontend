@@ -92,6 +92,7 @@ export default function CreateChallenge() {
             <ul className="p-2 shadow menu dropdown-content z-[1] mt-4 rounded-box bg-[#EFEFEF] bg-opacity-80 backdrop-blur-md w-full">
               {shipsChallenges.map((e: any) => (
                 <li
+                  key={e._tokenId}
                   onClick={() => setShipId(e._tokenId)}
                   className="text-black"
                 >
