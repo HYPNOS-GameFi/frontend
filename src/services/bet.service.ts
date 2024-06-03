@@ -3,11 +3,9 @@ import { Api } from "@/provider";
 export const BetService = {
   async onBetOnChallenge(
     walletId: string,
-    address: string,
-    amountPlayer1: number,
-    amountPlayer2: number,
-    shipId: number,
-    gameId: number
+    gameId: number,
+    amount: number,
+    shipId: number
   ) {
     try {
       const payload = {
@@ -15,13 +13,7 @@ export const BetService = {
         contractAddress: "0xeC0b52dA681658a2627cC89B0e20bC74f424C2bE",
         operations: [
           {
-            argumentsValues: [
-              address,
-              amountPlayer1,
-              amountPlayer2,
-              shipId,
-              gameId,
-            ],
+            argumentsValues: [Number(gameId), Number(amount), Number(shipId)],
             messageValue: 0,
             functionSignature: "betOnChallenge(uint256,uint256,uint256)",
           },
@@ -30,7 +22,8 @@ export const BetService = {
       const { data } = await Api.post("/transactions/custom", payload);
       await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
       const hashRes = await Api.get(`/transactions/${data.id}`);
-      const hash = hashRes.data;
+      console.log(hashRes);
+      const hash = hashRes.data.transactionHash;
       return hash;
     } catch (error) {
       console.error(error);

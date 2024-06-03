@@ -1,8 +1,20 @@
 import { shipsData } from "@/constants";
 import { Button } from "../Button";
-export function OneChallengeList({ challenge }: any) {
+import { useEffect, useState } from "react";
+import { WalletService } from "@/services/wallet.service";
+export function OneChallengeList({ challenge, setShipId }: any) {
   if (!challenge) return null;
   const { tokenId2, _tokenId, _type, bets, points } = challenge;
+  const [shipInfo, setShipInfo] = useState<any>(null);
+
+  useEffect(() => {
+    console.log(_tokenId);
+    WalletService.getShipInfo(_tokenId)
+      .then((shipInfo) => setShipInfo(shipInfo))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const title = shipsData[shipInfo?._shipClass]?.title;
 
   const bet1 = bets && bets[0] | 0;
   const bet2 = bets && bets[1] | 0;
@@ -17,7 +29,7 @@ export function OneChallengeList({ challenge }: any) {
           <th className="text-[#EFEFEF] text-opacity-50">Ship id</th>
           <th className="text-[#EFEFEF] text-opacity-50">SHIP CLASS</th>
           <th className="text-[#EFEFEF] text-opacity-50">current score</th>
-          {_type === 0 && (
+          {_type === 1 && (
             <>
               <th className="text-[#EFEFEF] text-opacity-50">bet amount</th>
               <th className="text-[#EFEFEF] text-opacity-50">number of bets</th>
@@ -31,17 +43,19 @@ export function OneChallengeList({ challenge }: any) {
       <tbody>
         <tr className="flex items-center text-sm uppercase w-full overflow-x-auto justify-between py-4 border-y font-nexa">
           <td className="text-center">{_tokenId}</td>
-          <td className="text-yellow-primary text-center">
-            {shipsData[_type].title}
-          </td>
+          <td className="text-yellow-primary text-center">{title}</td>
           <td className="text-center">{points1}</td>
-          {_type === 0 && (
+          {_type === 1 && (
             <>
               <td className="text-center flex items-center">$ {bet1} USD</td>
               <td className="text-center">0</td>
               <td className="flex items-center gap-4">
                 <Button
                   children={"BET NOW"}
+                  onClick={() => {
+                    setShipId(_tokenId);
+                    (document.getElementById("onBet") as any).showModal();
+                  }}
                   bgColor={"yellow"}
                   width="w-[150px]"
                   height="h-[36px]"
@@ -54,15 +68,19 @@ export function OneChallengeList({ challenge }: any) {
         {tokenId2 && (
           <tr className="flex items-center text-sm uppercase w-full overflow-x-auto justify-between py-4 border-y font-nexa">
             <td className="text-center">{tokenId2}</td>
-            <td className="text-yellow-primary">{shipsData[_type].title}</td>
+            <td className="text-yellow-primary">{title}</td>
             <td className="text-center">{points2}</td>
-            {_type === 0 && (
+            {_type === 1 && (
               <>
                 <td className="text-center flex items-center">$ {bet2} USD</td>
                 <td className="text-center">0</td>
                 <td className="flex items-center gap-4">
                   <Button
                     children={"BET NOW"}
+                    onClick={() => {
+                      setShipId(tokenId2);
+                      (document.getElementById("onBet") as any).showModal();
+                    }}
                     bgColor={"yellow"}
                     width="w-[150px]"
                     height="h-[36px]"
