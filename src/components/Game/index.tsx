@@ -5,10 +5,12 @@ import { IShipInfo } from "@/interfaces/IShip";
 import { ChallengeService } from "@/services/challenge.service";
 import { WalletService } from "@/services/wallet.service";
 import { userStore } from "@/stores/userStore";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Game = () => {
   const [infoShip, setInfoShip] = useState<IShipInfo | null>(null);
+  const { push } = useRouter();
   const user = StorageHelper.getItem("user");
   const { playingShip } = userStore();
   const ship_class = infoShip && infoShip._shipClass;
@@ -334,11 +336,12 @@ const Game = () => {
               dyingSound.play();
             }
             if (health == 0) {
-              ChallengeService.onPlayPoints(playingShip, score)
-                .then((res) => console.log(res))
-                .catch((e) => console.log(e));
+              ChallengeService.onPlayPoints(playingShip, score).then(() =>
+                push("/profile")
+              );
 
               alert("You DIED!\nYour score was " + score);
+              push("/profile");
             }
           }
         }

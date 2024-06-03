@@ -100,13 +100,21 @@ export const BetService = {
     }
   },
 
-  /* async fetchLog(hash: string) {
+  async getMyBets(address: string) {
     try {
       const data = JSON.stringify({
         query: `
         {
-          transfers(where: {transactionHash: "${hash}"}) {
-            gameId
+          betedOnChallenges(
+            orderBy: blockTimestamp
+            orderDirection: desc
+            where: {_address: "${address}"}
+          ) {
+            _address
+            _tokenId
+            _totalAmount1
+            _totalAmount2
+            gameid
           }
         }`,
       });
@@ -118,11 +126,11 @@ export const BetService = {
         },
         data,
       };
-      const response = await axios.request(config);
-      return response.data.data.transfers[0].tokenId;
+      const response = await Api.request(config);
+      const bets = response.data.data.betedOnChallenges;
+      return bets;
     } catch (error) {
       console.log(error);
-      return [];
     }
-  }, */
+  },
 };

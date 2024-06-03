@@ -6,6 +6,7 @@ import { shipsData } from "@/constants";
 import { StorageHelper } from "@/helpers/StorageHelper";
 import { ChallengeService } from "@/services/challenge.service";
 import { WalletService } from "@/services/wallet.service";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -17,8 +18,7 @@ export default function CreateChallenge() {
   const [timeChallenge, setTimeChallenge] = useState(0);
   const [shipsChallenges, setShipsChallenges] = useState<any[]>([]);
   const user = StorageHelper.getItem("user");
-
-  console.log(shipsChallenges);
+  const { push } = useRouter();
 
   useEffect(() => {
     const { address } = user;
@@ -42,13 +42,13 @@ export default function CreateChallenge() {
 
   async function onOpenChallenge() {
     setLoading(true);
-    console.log(user.id, shipId, bet, timeChallenge);
     const res = await ChallengeService.onOpenChallenge(
       user.id,
       shipId,
       bet,
       timeChallenge
     );
+    push("/challenge");
     toast.success("Success: ", res);
     setLoading(false);
   }

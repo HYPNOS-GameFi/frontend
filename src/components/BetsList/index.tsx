@@ -1,6 +1,27 @@
+"use client";
 import { playersData } from "@/constants";
+import { StorageHelper } from "@/helpers/StorageHelper";
+import { BetService } from "@/services/bet.service";
+import { ChallengeService } from "@/services/challenge.service";
+import { WalletService } from "@/services/wallet.service";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export function BetsList() {
+  const [bets, setBets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const user = StorageHelper.getItem("user");
+  const { push } = useRouter();
+
+  useEffect(() => {
+    async function getBets() {
+      const res = await BetService.getMyBets(user.address);
+      setBets(res);
+    }
+
+    getBets();
+  }, []);
+
   return (
     <table className="table overflow-x-auto">
       <thead>
@@ -17,8 +38,8 @@ export function BetsList() {
         </div>
       </thead>
       <tbody>
-        {playersData.slice(0, 10).map((e, i) => {
-          const result = Number(e.result).toFixed(2)
+        {bets.slice(0, 10).map((e, i) => {
+          const result = Number(e.result).toFixed(2);
           return (
             <tr
               key={i}
@@ -37,7 +58,9 @@ export function BetsList() {
                 {e.status}
               </td>
               <td
-                className={`${Number(result) > 0 && "text-yellow-primary"} w-32 text-end`}
+                className={`${
+                  Number(result) > 0 && "text-yellow-primary"
+                } w-32 text-end`}
               >
                 $ {result} USD
               </td>
@@ -51,18 +74,6 @@ export function BetsList() {
         </h1>
         <h1 className="w-8 h-8 flex items-center justify-center rounded bg-yellow-primary text-black">
           1
-        </h1>
-        <h1 className="w-8 h-8 flex items-center justify-center text-white text-opacity-50 rounded border border-[#EFEFEF] border-opacity-50 ">
-          2
-        </h1>
-        <h1 className="w-8 h-8 flex items-center justify-center text-white text-opacity-50 rounded border border-[#EFEFEF] border-opacity-50 ">
-          3
-        </h1>
-        <h1 className="w-8 h-8 flex items-center justify-center text-white text-opacity-50 rounded border border-[#EFEFEF] border-opacity-50 ">
-          4
-        </h1>
-        <h1 className="w-8 h-8 flex items-center justify-center text-white text-opacity-50 rounded border border-[#EFEFEF] border-opacity-50 ">
-          5
         </h1>
         <h1 className="text-[#EFEFEF] text-opacity-50 cursor-pointer space-x-2">
           next {">"}

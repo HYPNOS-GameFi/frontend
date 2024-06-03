@@ -174,13 +174,23 @@ export const ChallengeService = {
       );
 
       const updatedChallengeOpens = filteredChallengeOpens.map((open: any) => {
-        const isAccepted = challengeAccepteds.some(
+        const acceptedChallenge = challengeAccepteds.find(
           (accepted: any) => accepted.gameid === open.gameid
         );
-        return { ...open, disabled: isAccepted };
+
+        const tokenId2 = acceptedChallenge?._tokenId;
+        const user2 = acceptedChallenge?._user;
+        const blockTimestamp2 = acceptedChallenge?.blockTimestamp;
+
+        return {
+          ...open,
+          disabled: !!acceptedChallenge,
+          tokenId2,
+          user2,
+          blockTimestamp2,
+        };
       });
 
-      console.log(updatedChallengeOpens);
       return updatedChallengeOpens;
     } catch (error) {
       console.log(error);

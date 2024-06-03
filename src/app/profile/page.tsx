@@ -14,18 +14,14 @@ import { MintService } from "@/services/mint.service";
 import { BetService } from "@/services/bet.service";
 import { useState } from "react";
 import { shipsData } from "@/constants";
+import { useRouter } from "next/navigation";
+import { MyChallenges } from "@/components/ChallengeList/MyChallenges";
 
 export default function Profile() {
   const user = StorageHelper.getItem("user");
   const [ships, setShips] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-
-  async function onPick() {
-    setLoading(true);
-    const res = await ChallengeService.onPickChallenge(user.id, 1, 2);
-    console.log(res);
-    setLoading(false);
-  }
+  const { push } = useRouter();
 
   async function onClaimBet(values: any) {
     setLoading(true);
@@ -107,13 +103,13 @@ export default function Profile() {
       <div className="flex items-center justify-between gap-4 mt-40">
         <h1 className="text-5xl w-full">YOUR CHALLENGES</h1>
         <Button
-          onClick={onPick}
+          onClick={() => push("/create-challenge")}
           children={"JOIN A BLANK CHALLENGE"}
           bgColor="transparent"
           width="w-full"
         />
       </div>
-      <ChallengeList />
+      <MyChallenges />
       <UserPool
         loading={loading}
         claimBet={onClaimBet}

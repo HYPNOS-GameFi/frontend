@@ -5,7 +5,8 @@ import { ChallengeService } from "@/services/challenge.service";
 import { WalletService } from "@/services/wallet.service";
 import { StorageHelper } from "@/helpers/StorageHelper";
 import { useRouter } from "next/navigation";
-export function ChallengeList() {
+
+export function MyChallenges() {
   const [challenges, setChallenges] = useState<any[]>([]);
   const [ships, setShips] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -16,8 +17,8 @@ export function ChallengeList() {
 
   useEffect(() => {
     async function getChallenges() {
+      const { address } = user;
       const res = await ChallengeService.getAvailableChallenges();
-      console.log(res);
       const challengArray: any[] = [];
       res.forEach((e: any) => {
         WalletService.getShipInfo(e._tokenId)
@@ -25,7 +26,7 @@ export function ChallengeList() {
           .catch((err) => console.log(err));
       });
 
-      const ships = await WalletService.getUserShips(user.address);
+      const ships = await WalletService.getUserShips(address);
       const challenges = await ChallengeService.getNotAvailableShips();
       const uniqueShips = ships?.filter(
         (ship) =>
@@ -34,15 +35,21 @@ export function ChallengeList() {
               Number(challenge._tokenId) === Number(ship._tokenId)
           )
       );
+
+      const myChallenges = challengArray.filter((e: any) => {
+        const user = e._user?.toUpperCase();
+        const user2 = e.user2?.toUpperCase();
+        const addressUpper = address.toUpperCase();
+        return user === addressUpper || user2 === addressUpper;
+      });
+
       setShips(ships!);
       setShipsChallenges(uniqueShips!);
-      setChallenges(challengArray);
+      setChallenges(myChallenges);
     }
 
     getChallenges();
   }, []);
-
-  console.log(challenges)
 
   async function onPickChallenge(gameId: number, shipId: number) {
     setLoading(true);
@@ -71,6 +78,7 @@ export function ChallengeList() {
         {challenges.slice(0, 10).map((e, i) => {
           const time =
             e._choice === 0 ? "12H" : e._choice === 1 ? "24H" : "48H";
+
           return (
             <tr
               key={i}
@@ -128,7 +136,7 @@ export function ChallengeList() {
                     (document.getElementById("selectShip") as any).showModal()
                   }
                   children={"Challenge"}
-                  bgColor={e.disabled ? "gray" : "yellow"}
+                  bgColor="yellow"
                   width="[150px]"
                   height="h-[36px]"
                 />
