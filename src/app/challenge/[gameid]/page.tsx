@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { CountDown } from "@/components/CountDown";
 import { ChallengeService } from "@/services/challenge.service";
@@ -24,6 +24,7 @@ export default function ChallengeId({ params }: any) {
       const { getBets, getNotAvailableShips, getChallengePoints } =
         ChallengeService;
       const bets = await getBets(gameId);
+      console.log(bets)
       const points = await getChallengePoints(gameId);
       const challenges = await getNotAvailableShips();
       const challenge = challenges?.find(
@@ -69,6 +70,7 @@ export default function ChallengeId({ params }: any) {
             <div className="w-full flex flex-col gap-4 mt-8">
               <input
                 type="number"
+                min={101}
                 {...register("amount")}
                 placeholder="AMOUNT USD"
                 className="rounded bg-[#EFEFEF] bg-opacity-20 text-[#EFEFEF] font-nexa p-4 px-6 w-full"
@@ -80,6 +82,7 @@ export default function ChallengeId({ params }: any) {
               </h1>
               {hash && (
                 <a
+                  target="_blank"
                   href={`https://amoy.polygonscan.com/tx/${hash}`}
                   className="text-xs normal-case text-blue-400 text-start tracking-wide mb-4"
                 >

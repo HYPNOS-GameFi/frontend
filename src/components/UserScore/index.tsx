@@ -1,3 +1,4 @@
+"use client";
 import { StorageHelper } from "@/helpers/StorageHelper";
 import { ChallengeService } from "@/services/challenge.service";
 import { WalletService } from "@/services/wallet.service";
@@ -15,7 +16,7 @@ export function UserScore({
   const [points, setPoints] = useState(0);
 
   useEffect(() => {
-    const { address } = user;
+    const address = user?.address;
     WalletService.getUserShips(address)
       .then((ships) => setShips(ships))
       .catch((e) => console.error(e));

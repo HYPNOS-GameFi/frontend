@@ -11,10 +11,23 @@ import { useEffect, useState } from "react";
 const Game = () => {
   const [infoShip, setInfoShip] = useState<IShipInfo | null>(null);
   const { push } = useRouter();
-  const user = StorageHelper.getItem("user");
   const { playingShip } = userStore();
   const ship_class = infoShip && infoShip._shipClass;
   const ship = shipsData[ship_class!];
+
+  async function onGetChallenges() {
+    const challenges = await ChallengeService.getNotAvailableShips();
+    console.log(playingShip);
+    const challenge = challenges.find((e: any) => {
+      console.log(e._tokenId, e._tokenId);
+      const token1 = Number(e._tokenId) === playingShip;
+      const token2 = Number(e.tokenId2) === playingShip;
+      return token1 || token2;
+    });
+    console.log(challenge);
+    const gameId = challenge ? challenge.gameid : 0;
+    return gameId;
+  }
 
   useEffect(() => {
     WalletService.getShipInfo(playingShip)
@@ -336,12 +349,19 @@ const Game = () => {
               dyingSound.play();
             }
             if (health == 0) {
-              ChallengeService.onPlayPoints(playingShip, score).then(() =>
-                push("/profile")
-              );
-
-              alert("You DIED!\nYour score was " + score);
-              push("/profile");
+              gunSound.pause();
+              explosionSound.pause();
+              menuSound.pause();
+              dyingSound.pause();
+              (document.getElementById("savingScore") as any).showModal();
+              onGetChallenges().then((isChallenge) => {
+                console.log(isChallenge);
+                ChallengeService.onPlayChallenge(
+                  playingShip,
+                  isChallenge,
+                  score
+                ).then(() => push("/profile"));
+              });
             }
           }
         }

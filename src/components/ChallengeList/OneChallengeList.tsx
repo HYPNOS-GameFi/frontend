@@ -6,17 +6,18 @@ export function OneChallengeList({ challenge, setShipId }: any) {
   const [shipInfo, setShipInfo] = useState<any>(null);
 
   useEffect(() => {
-    console.log(challenge._tokenId);
-    WalletService.getShipInfo(challenge._tokenId)
+    WalletService.getShipInfo(challenge?._tokenId)
       .then((shipInfo) => setShipInfo(shipInfo))
       .catch((err) => console.log(err));
-  }, []);
+  }, [challenge]);
   if (!challenge) return null;
   const { tokenId2, _tokenId, _type, bets, points } = challenge;
   const title = shipsData[shipInfo?._shipClass]?.title;
 
-  const bet1 = bets && bets[0] | 0;
-  const bet2 = bets && bets[1] | 0;
+  const bet1 = bets && bets[0]?._totalAmount1 | 0;
+  const bet2 = bets && bets[0]?._totalAmount2 | 0;
+
+  console.log(points)
 
   const points1 = points && points[0] | 0;
   const points2 = points && points[1] | 0;

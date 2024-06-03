@@ -71,7 +71,9 @@ export const ChallengeService = {
       const { data } = await Api.post("/transactions/custom", payload);
       await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
       const hashRes = await Api.get(`/transactions/${data.id}`);
-      const hash = hashRes.data;
+      console.log(hashRes)
+      const hash = hashRes.data.transactionHash;
+      console.log(hash)
       return hash;
     } catch (error) {
       console.error(error);
@@ -102,7 +104,6 @@ export const ChallengeService = {
   },
 
   async getChallengesFinalizeds(address: string) {
-    console.log(`{_winner: "${address}"}`);
     try {
       const data = JSON.stringify({
         query: `
