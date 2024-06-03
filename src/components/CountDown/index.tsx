@@ -1,20 +1,22 @@
 import { DateFormat } from "@/helpers/DateFormat";
 import { useEffect, useState } from "react";
 
-export function CountDown({
-  timestamp1,
-  timestamp2,
-}: {
-  timestamp1: number | string;
-  timestamp2: number | string;
-}) {
+export function CountDown(challenge: any) {
+  const { blockTimestamp2, _choice } = challenge;
   const { timestampToDate } = DateFormat;
-  const [timer, setTimer] = useState<number>(Number(timestamp2));
+  const timestamp = blockTimestamp2 * 1000;
+  const choice =
+    _choice === 0 ? 3600 * 12 : _choice === 1 ? 3600 * 24 : 3600 * 48;
+  const choiceTimestamp = choice * 1000;
+
+  const [timer, setTimer] = useState<number>(choice);
+
+  const timeEnd = new Date(timestamp + choiceTimestamp).getTime();
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
-      const timeRemain = Number(timestamp2) - now;
+      const timeRemain = timeEnd - now;
       setTimer((prevTime) => {
         if (prevTime! <= 0) {
           clearInterval(interval);
@@ -25,10 +27,9 @@ export function CountDown({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timestamp1, timestamp2]);
+  }, [blockTimestamp2, timeEnd]);
 
-  const toDate = timestamp2 ? timer : Number(timestamp1);
-
+  const toDate = blockTimestamp2 ? timer : choice;
   const { days, hours, seconds, minutes } = timestampToDate(toDate);
 
   return (
@@ -43,7 +44,7 @@ export function CountDown({
         <span className="countdown font-mono mb-2 text-5xl">
           <h1 style={{ "--value": hours } as any}></h1>
         </span>
-        hr
+        hrs
       </h1>
       <h1 className="flex flex-col p-2 text-white text-opacity-50">
         <span className="countdown font-mono mb-2 text-5xl">

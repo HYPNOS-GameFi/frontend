@@ -13,21 +13,29 @@ function secToDays(secs: number) {
   return secs / segundosEmUmDia;
 }
 
+function unixToTimestamp(unixTime: number) {
+  return unixTime * 1000;
+}
+
 function timestampUntil(dateString: string | number) {
+  if (!dateString) return 0;
   const now = new Date();
-  if (!dateString) return;
   const targetDate = new Date(dateString);
+  if (isNaN(targetDate.getTime())) {
+    console.error("Invalid date string provided.");
+    return 0;
+  }
   const differenceInMilliseconds = targetDate.getTime() - now.getTime();
   return differenceInMilliseconds;
 }
 
 function timestampToDate(timestamp: number) {
-  const days = Math.floor(timestamp / (24 * 3600));
-  const remainingAfterDays = timestamp % (24 * 3600);
-  const hours = Math.floor(remainingAfterDays / 3600);
-  const remainingAfterHours = remainingAfterDays % 3600;
-  const minutes = Math.floor(remainingAfterHours / 60);
-  const seconds = remainingAfterHours % 60;
+  const days = Math.floor(timestamp / (24 * 3600 * 1000));
+  const remainingAfterDays = timestamp % (24 * 3600 * 1000);
+  const hours = Math.floor(remainingAfterDays / (3600 * 1000));
+  const remainingAfterHours = remainingAfterDays % (3600 * 1000);
+  const minutes = Math.floor(remainingAfterHours / (60 * 1000));
+  const seconds = Math.floor((remainingAfterHours % (60 * 1000)) / 1000);
 
   return {
     days,
@@ -37,8 +45,8 @@ function timestampToDate(timestamp: number) {
   };
 }
 
-function dateToTimestamp() {
-  return Math.floor(new Date("2024-05-05").getTime() / 1000);
+function dateToTimestamp(date: string) {
+  return Math.floor(new Date(date).getTime() / 1000);
 }
 
 export const DateFormat = {
@@ -47,5 +55,6 @@ export const DateFormat = {
   secToDays,
   timestampUntil,
   timestampToDate,
+  unixToTimestamp,
   dateToTimestamp,
 };

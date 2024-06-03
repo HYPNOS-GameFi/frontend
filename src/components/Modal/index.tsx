@@ -10,6 +10,8 @@ type Props = {
 };
 
 export function Modal({ id, title, subtitle, shipId }: Props) {
+  console.log(id)
+  const img = shipsData[shipId]?.shipGameImg || "";
   return (
     <dialog
       id={id}
@@ -41,7 +43,7 @@ export function Modal({ id, title, subtitle, shipId }: Props) {
           <h1 className="text-sm text-center">SHIP ID: {shipId}</h1>
         </div>
         <Image
-          src={shipsData[shipId].shipGameImg}
+          src={img}
           alt="logo"
           width={10000}
           height={10000}

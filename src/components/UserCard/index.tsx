@@ -24,7 +24,7 @@ export function UserCard({
   const user = StorageHelper.getItem("user");
 
   async function onChallenge() {
-    const res = await ChallengeService.onPlayChallenge(user.id, 1, 0, 2);
+    const res = await ChallengeService.onPlayChallenge(1, 0, 2);
     console.log(res);
   }
 

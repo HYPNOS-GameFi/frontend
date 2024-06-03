@@ -47,7 +47,7 @@ export const ChallengeService = {
       console.log(data);
       await new Promise((resolve) => setTimeout(resolve, 30 * 1000));
       const hashRes = await Api.get(`/transactions/${data.id}`);
-      const hash = hashRes.data;
+      const hash = hashRes.data.transactionHash;
       console.log(hash);
       return hash;
     } catch (error) {
@@ -55,15 +55,10 @@ export const ChallengeService = {
     }
   },
 
-  async onPlayChallenge(
-    walletId: string,
-    shipId: number,
-    gameId: number,
-    pointsToBet: number
-  ) {
+  async onPlayChallenge(shipId: number, gameId: number, pointsToBet: number) {
     try {
       const payload = {
-        walletId,
+        walletId: "88db8f17-a023-4b27-ba30-26843c92e618",
         contractAddress: "0xeC0b52dA681658a2627cC89B0e20bC74f424C2bE",
         operations: [
           {
@@ -83,10 +78,10 @@ export const ChallengeService = {
     }
   },
 
-  async onPlayPoints(walletId: string, shipId: number, betPoints: number) {
+  async onPlayPoints(shipId: number, betPoints: number) {
     try {
       const payload = {
-        walletId,
+        walletId: "88db8f17-a023-4b27-ba30-26843c92e618",
         contractAddress: "0xeC0b52dA681658a2627cC89B0e20bC74f424C2bE",
         operations: [
           {

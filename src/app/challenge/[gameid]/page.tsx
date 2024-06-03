@@ -16,19 +16,20 @@ export default function ChallengeId({ params }: any) {
       const bets = await getBets(gameId);
       const points = await getChallengePoints(gameId);
       const challenges = await getNotAvailableShips();
-      console.log(challenges);
       const challenge = challenges?.find(
         (e: any) => Number(e.gameid) === gameId
       );
       const infoChallenge = { ...challenge, bets, points };
-      console.log(infoChallenge);
       setChallenge(infoChallenge);
     }
 
     getArrays();
   }, [gameId]);
 
-  console.log(challenge)
+  console.log(challenge);
+
+  const choice =
+    challenge?._choice === 0 ? 12 : challenge?._choice === 1 ? 24 : 48;
 
   return (
     <section className="py-40 pt-60 px-[15%] min-h-screen bg-ship bg-no-repeat bg-center bg-cover">
@@ -44,14 +45,11 @@ export default function ChallengeId({ params }: any) {
         <div className="uppercase text-center">
           <h1 className="text-3xl">Challenge</h1>
           <h1 className="flex items-center mb-4 mt-6 text-sm gap-4 text-center justify-center text-white text-opacity-50">
-            JUNE 02 - JUNE 04 <h1 className="text-sm">02 days</h1>
+            {choice} Hours
           </h1>
-          <CountDown
-            timestamp1={challenge?.blockTimestamp}
-            timestamp2={challenge?.blockTimestamp2}
-          />
+          <CountDown {...challenge} />
           <h1 className="text-sm text-yellow-primary tracking-[0.5em] mt-10">
-            {challenge?._choice === 0 ? "OPEN CHALLENGE" : "POINTS ONLY"}
+            {challenge?._type === 0 ? "OPEN CHALLENGE" : "POINTS ONLY"}
           </h1>
         </div>
         <Image

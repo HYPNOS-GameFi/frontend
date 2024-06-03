@@ -60,7 +60,6 @@ export function ShipCard({
     try {
       setLoading(true);
       const res = await MintService.onMintClass(user.id, id);
-      toast.success(`Success: ${res?.hash}`);
       const modal: any = document.getElementById(modalId);
       await modal.showModal();
       setShipId(res?.id);
@@ -100,7 +99,7 @@ export function ShipCard({
   return (
     <div className="rounded-md overflow-hidden bg-shipCard bg-no-repeat bg-center bg-cover h-[444px] relative flex flex-col items-start justify-center p-8">
       {!myShip && (
-        <Modal id={modalId} title={title} subtitle={subtitle} shipId={shipId} />
+        <Modal id={modalId} title={title} subtitle={subtitle} shipId={id} />
       )}
       <div className="absolute top-0 left-0 flex items-center justify-center p-4 px-6 bg-white text-black font-nexa text-xs uppercase gap-4 rounded-br-md">
         {multiplier}x score multiplier

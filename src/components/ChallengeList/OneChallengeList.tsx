@@ -2,8 +2,7 @@ import { shipsData } from "@/constants";
 import { Button } from "../Button";
 export function OneChallengeList({ challenge }: any) {
   if (!challenge) return null;
-  const { gameid, tokenId2, _tokenId, _type, _choice, bets, points } =
-    challenge;
+  const { tokenId2, _tokenId, _type, bets, points } = challenge;
 
   const bet1 = bets && bets[0] | 0;
   const bet2 = bets && bets[1] | 0;
@@ -18,7 +17,7 @@ export function OneChallengeList({ challenge }: any) {
           <th className="text-[#EFEFEF] text-opacity-50">Ship id</th>
           <th className="text-[#EFEFEF] text-opacity-50">SHIP CLASS</th>
           <th className="text-[#EFEFEF] text-opacity-50">current score</th>
-          {_choice === 0 && (
+          {_type === 0 && (
             <>
               <th className="text-[#EFEFEF] text-opacity-50">bet amount</th>
               <th className="text-[#EFEFEF] text-opacity-50">number of bets</th>
@@ -36,7 +35,7 @@ export function OneChallengeList({ challenge }: any) {
             {shipsData[_type].title}
           </td>
           <td className="text-center">{points1}</td>
-          {_choice === 0 && (
+          {_type === 0 && (
             <>
               <td className="text-center flex items-center">$ {bet1} USD</td>
               <td className="text-center">0</td>
@@ -55,11 +54,9 @@ export function OneChallengeList({ challenge }: any) {
         {tokenId2 && (
           <tr className="flex items-center text-sm uppercase w-full overflow-x-auto justify-between py-4 border-y font-nexa">
             <td className="text-center">{tokenId2}</td>
-            <td className="text-yellow-primary">
-              {shipsData[_type].title}
-            </td>
+            <td className="text-yellow-primary">{shipsData[_type].title}</td>
             <td className="text-center">{points2}</td>
-            {_choice === 0 && (
+            {_type === 0 && (
               <>
                 <td className="text-center flex items-center">$ {bet2} USD</td>
                 <td className="text-center">0</td>

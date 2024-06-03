@@ -334,7 +334,7 @@ const Game = () => {
               dyingSound.play();
             }
             if (health == 0) {
-              ChallengeService.onPlayPoints(user.id, playingShip, score)
+              ChallengeService.onPlayPoints(playingShip, score)
                 .then((res) => console.log(res))
                 .catch((e) => console.log(e));
 

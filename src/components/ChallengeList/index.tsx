@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ChallengeService } from "@/services/challenge.service";
 import { WalletService } from "@/services/wallet.service";
 import { StorageHelper } from "@/helpers/StorageHelper";
+import { useRouter } from "next/navigation";
 export function ChallengeList() {
   const [challenges, setChallenges] = useState<any[]>([]);
   const [ships, setShips] = useState<any[]>([]);
@@ -11,6 +12,7 @@ export function ChallengeList() {
   const [shipId, setShipId] = useState(0);
   const [shipsChallenges, setShipsChallenges] = useState<any[]>([]);
   const user = StorageHelper.getItem("user");
+  const { push } = useRouter();
 
   useEffect(() => {
     async function getChallenges() {
@@ -43,7 +45,8 @@ export function ChallengeList() {
     setLoading(true);
     const { onPickChallenge } = ChallengeService;
     const challenge = await onPickChallenge(user.id, gameId, shipId);
-    /* console.log(challenge) */
+    console.log(challenge);
+    push(`/challenge/${gameId}`);
     setLoading(false);
   }
 
@@ -132,6 +135,7 @@ export function ChallengeList() {
               <td className="flex items-center gap-4">
                 <Button
                   disabled={Number(e._type) === 0}
+                  onClick={() => push(`/challenge/${e.gameid}`)}
                   children={Number(e._type) === 0 ? "disabled" : "BET NOW"}
                   bgColor={Number(e._type) === 0 ? "gray" : "yellow"}
                   width="w-[150px]"
