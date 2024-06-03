@@ -3,17 +3,16 @@ import { Button } from "../Button";
 import { useEffect, useState } from "react";
 import { WalletService } from "@/services/wallet.service";
 export function OneChallengeList({ challenge, setShipId }: any) {
-  if (!challenge) return null;
-  const { tokenId2, _tokenId, _type, bets, points } = challenge;
   const [shipInfo, setShipInfo] = useState<any>(null);
 
   useEffect(() => {
-    console.log(_tokenId);
-    WalletService.getShipInfo(_tokenId)
+    console.log(challenge._tokenId);
+    WalletService.getShipInfo(challenge._tokenId)
       .then((shipInfo) => setShipInfo(shipInfo))
       .catch((err) => console.log(err));
   }, []);
-
+  if (!challenge) return null;
+  const { tokenId2, _tokenId, _type, bets, points } = challenge;
   const title = shipsData[shipInfo?._shipClass]?.title;
 
   const bet1 = bets && bets[0] | 0;
